@@ -391,14 +391,21 @@ bool ofxFFmpegRecorder::startCustomRecord()
 //    args.push_back("-pix_fmt " + mOutputPixFmt );
     args.push_back("-pix_fmt " + mOutputPixFmt );
     std::copy(m_AdditionalOutputArguments.begin(), m_AdditionalOutputArguments.end(), std::back_inserter(args));
-    
-    args.push_back( ofToDataPath(m_OutputPath,true));
+
+    // quote the output path if it contains spaces
+    std::string outputArg = ofToDataPath(m_OutputPath, true);
+    if (outputArg.find(' ') != std::string::npos) {
+        outputArg = "\"" + outputArg + "\"";
+    }
+    args.push_back(outputArg);
 //    args.push_back("-codecs ");
 
     std::string cmd = m_FFmpegPath + " ";
     for (auto arg : args) {
         cmd += arg + " ";
     }
+
+    LOG_NOTICE("FFmpeg command: " << cmd << std::endl);
 
 #if defined(_WIN32)
     m_CustomRecordingFile = _popen(cmd.c_str(), "wb");
