@@ -16,4 +16,4 @@ See the examples.
 
 # Dependencies
 
-ofxFFmpegRecorder depends only on openFrameworks and nothing else.
+ofxFFmpegRecorder depends openFrameworks; ffmpeg libs for macos and visual studio are included. ffmpeg can be installed via apt on linux.
